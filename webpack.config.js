@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 Array.prototype.trim = function() {
 	return this.filter(Boolean);
 };
@@ -7,7 +9,9 @@ HtmlWebpackPlugin = require('html-webpack-plugin'),
 { resolve } = require('path');
 
 module.exports = ({ development: dev = false } = {}) => {
-	const ext = dev ? 'js' : 'min.js';
+  const ext = dev ? 'js' : 'min.js',
+    { PUBLIC_URL: publicPath = '/', 
+      OUTPUT_PATH: outputPath = 'build' } = process.env; 
 
 	return {
 		mode: dev ? 'development' : 'production',
@@ -54,7 +58,7 @@ module.exports = ({ development: dev = false } = {}) => {
 						options: {
 							name: '[path][name].[hash].[ext]',
 							limit: 4096,
-							publicPath: '/'
+							publicPath
 						}
 					}
 				}, {
@@ -65,8 +69,8 @@ module.exports = ({ development: dev = false } = {}) => {
 		},
 
 		output: {
-      publicPath: '/',
-			path: resolve('build'),
+      publicPath,
+			path: resolve(outputPath),
 			filename: `index.bundle.${ext}`,
 			pathinfo: false
 		},
