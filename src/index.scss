@@ -1,0 +1,133 @@
+body {
+  background-color: black;
+}
+
+#memory {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  place-items: center;
+  grid-gap: .75rem;
+  justify-content: center;
+  align-content: center;
+  gap: .75rem;
+
+  &.success div {
+    background-color: white;
+  }
+
+  &.fail div {
+    background-color: red;
+  }
+}
+
+#memory div {
+  background-color: #377;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  transition: background-color .5s;
+  position: relative;
+  mix-blend-mode: screen;
+
+  &::before, &::after {
+    content: '';
+    mix-blend-mode: screen;
+    transition-property: opacity;
+    transition-duration: .3s;
+    position: absolute;
+    opacity: 0;
+    backface-visibility: hidden;
+  }
+
+  &::before {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #aaf;
+    border-radius: 50%;
+    box-shadow: 0 0 50px 0 rgba(100, 200, 255, 1), 0 0 10px 2px rgba(200, 200, 255, 0.5);
+  }
+
+  &::after {
+    top: -75px;
+    left: -75px;
+    right: -75px;
+    bottom: -75px;
+    background-image: url(./images/flare.png);
+    background-size: 100%;
+    pointer-events: none;
+  }
+
+  &:nth-child(2)::after {
+    transform: rotate(30deg);
+  }
+
+  &:nth-child(3)::after {
+    transform: rotate(60deg);
+  }
+
+  &:nth-child(4)::after {
+    transform: rotate(90deg);
+  }
+
+
+  &:nth-child(5)::after {
+    transform: rotate(-25deg);
+  }
+
+  &:nth-child(7)::after {
+    transform: rotate(90deg);
+  }
+
+  &:nth-child(8)::after {
+    transform: rotate(110deg);
+  }
+
+
+  &:nth-child(9)::after {
+    transform: rotate(115deg);
+  }
+
+  &:nth-child(10)::after {
+    transform: rotate(90deg);
+  }
+
+  &:nth-child(12)::after {
+    transform: rotate(150deg);
+  }
+
+
+  &:nth-child(13)::after {
+    transform: rotate(90deg);
+  }
+
+  &:nth-child(14)::after {
+    transform: rotate(70deg);
+  }
+
+  &:nth-child(15)::after {
+    transform: rotate(25deg);
+  }
+
+  &.strobo {
+    transition-duration: .2s;
+  }
+
+  &.lit, &:active {
+    transition: none;
+    background-color: #fff;
+
+    &::before {
+      transition: none;
+      opacity: 1;
+    }
+
+    &::after {
+      transition: none;
+      opacity: .75;
+    }
+  }
+}
+ 
