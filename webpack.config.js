@@ -5,8 +5,8 @@ Array.prototype.trim = function() {
 };
 
 const webpack = require('webpack'),
-HtmlWebpackPlugin = require('html-webpack-plugin'),
-{ resolve } = require('path');
+  HtmlWebpackPlugin = require('html-webpack-plugin'),
+  { resolve } = require('path');
 
 module.exports = ({ development: dev = false } = {}) => {
   const ext = dev ? 'js' : 'min.js',
