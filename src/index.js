@@ -1,7 +1,7 @@
 import './index.scss';
 import { fromEvent, interval, range, of, iif } from 'rxjs';
 import { map, takeWhile,
-  tap, filter, take, concatMap, every, skipUntil, count, mergeMap,
+  tap, filter, take, concatMap, every, count, mergeMap,
   takeLast, delay, repeat, endWith } from 'rxjs/operators';
 
 const query = q => document.querySelector(q),
@@ -21,33 +21,33 @@ const query = q => document.querySelector(q),
   win = [0, 1, 2, 3, 7, 11, 15, 14, 13, 12, 8, 4, 5, 
     6, 10, 9, 5, 6, 7, 11, 15, 14, 13, 12, 8, 4, 0, 1, 2, 3];
 
-//Sätt index i data-attribut
-[...children].forEach((c, i) => c.dataset.index = i + 1);
+// assign index to data attribute
+children.forEach((c, i) => c.dataset.index = i + 1);
 
-range(1, 8).pipe(
+range(1, 8).pipe(                            // main loop with 8 levels
   delay(500),
   concatMap(n => {
     const seq = randomizeSequence(n);
 
-    return fromEvent(memory, 'click').pipe(
-      filter(click => click.target.dataset.index),
-      skipUntil(
-        interval(500).pipe(
-          take(n),
-          map(i => children.item(seq[i] - 1)),
-          flash(256, 'lit', ''),
-          takeLast(1)
-        )
-      ),
+    return interval(500).pipe(                  // sequence to memorize
       take(n),
-      map(evt => Number(evt.target.dataset.index)),
-      every((e, i) => seq[i] === e),
+      map(i => children.item(seq[i] - 1)),
+      flash(256, 'lit', ''),
+      takeLast(1),
+      mergeMap(() =>
+        fromEvent(memory, 'click').pipe(                  // user input
+          filter(click => click.target.dataset.index),
+          take(n),
+          map(evt => Number(evt.target.dataset.index)),
+          every((e, i) => seq[i] === e),
+        )
+      )
     );
   }),
   takeWhile(Boolean),
   count(),
-  mergeMap(lv =>
-    iif(
+  mergeMap(lv =>                                          // end game
+    iif(                                                // win / lose?
       () => lv === 8, 
       interval(35).pipe(
         take(win.length),
